@@ -59,15 +59,6 @@
                     <?php echo $find_rs['User Rating']; ?>
                     - Based off <?php echo $find_rs['Rating Count']; ?> votes
                     
-
-                    <b>In App</b>:
-                    
-                    <?php 
-                    if ($find_rs == 1);
-                        echo "Yes"
-
-                    ?>
-                    <br />
                 
                 <hr />
                 <?php echo $find_rs['Description']; ?>
