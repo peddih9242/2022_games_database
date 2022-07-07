@@ -42,7 +42,7 @@
                         <a href="<?php echo $find_rs['URL']; ?>">
                             <?php echo $find_rs['Name']; ?>
                         </a>
-                    </span>
+                    </span> - <?php echo $find_rs['Subtitle']; ?>
 
                 <p>
                     <b>Genre</b>:
