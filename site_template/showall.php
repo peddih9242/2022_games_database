@@ -58,7 +58,7 @@
 
                         <div>
                             &nbsp; &nbsp; | &nbsp; &nbsp;
-                            <?php echo - $find_rs['Subtitle'] ?>;
+                            <?php echo $find_rs['Subtitle'] ?>
                         </div> <!-- Subtitle -->
                            
                         <?php
@@ -85,8 +85,30 @@
                     <b>Rating</b>:
                     <?php echo $find_rs['User Rating']; ?>
                     - Based off <?php echo $find_rs['Rating Count']; ?> votes
+                        
+                    <br />
                     
-                
+                    <?php 
+                    
+                    if($find_rs['Price'] == "0")
+                    {
+                        ?>
+                        <p>Free</p>
+                    
+                    <?php
+                    
+                    } // end price if
+
+                    else {
+                        ?>
+
+                        <b>Price:</b> $<?php echo $find_rs['Price'] ?>
+                    
+                    <?php 
+
+                    } // end price else (displays cost)
+                    
+                    ?>
                 <hr />
                 <?php echo $find_rs['Description']; ?>
 
