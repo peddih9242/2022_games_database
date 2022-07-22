@@ -93,8 +93,18 @@
                     if($find_rs['Price'] == "0")
                     {
                         ?>
-                        <p>Free</p>
+                        <p>Free
+                        
+                        <?php
+                            if ($find_rs['Purchases'] == "1")
+                            { ?>
+                                (In App Purchase)
+                        <?php 
+                            } // end in app if
+                        ?>
                     
+                        </p>
+
                     <?php
                     
                     } // end price if
