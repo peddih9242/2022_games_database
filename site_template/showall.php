@@ -70,7 +70,7 @@
 
 
                     <!-- heading and subtitle -->
-                
+
                 <p>
                     <b>Genre</b>:
                     <?php echo $find_rs['Genre']; ?>
@@ -85,9 +85,8 @@
                     <b>Rating</b>:
                     <?php echo $find_rs['User Rating']; ?>
                     - Based off <?php echo $find_rs['Rating Count']; ?> votes
-                        
-                    <br />
-                    
+
+                    <!-- Price -->
                     <?php 
                     
                     if($find_rs['Price'] == "0")
@@ -102,7 +101,7 @@
                         <?php 
                             } // end in app if
                         ?>
-                    
+                    <!-- put price and age in this paragraph tag -->
                         </p>
 
                     <?php
@@ -119,6 +118,25 @@
                     } // end price else (displays cost)
                     
                     ?>
+                
+                    Suitable for ages <b><?php echo $find_rs['Age']?></b> and up
+
+                    <br />
+                    
+                    <!-- Ratings Area -->
+                    <div class="flex-container">
+                        
+                        <!-- Partial Stars Original Source:
+                        https://codepen.io/Bluetidepro/pen/GkpEa -->
+                        <div class="star-ratings-sprite">
+                        <span style="width:<?php echo $find_rs['User Rating'] / 5 * 100 ?>%" class="star-ratings-sprite-rating"></span>
+                        </div> <!-- star rating div -->
+
+                        <div class="actual-rating">
+                        (<?php echo $find_rs['User Rating']?> based on <?php echo number_format($find_rs['Rating Count']) ?> ratings)
+                        </div> <!-- text rating div -->
+                    </div> <!-- rating flexbox -->
+
                 <hr />
                 <?php echo $find_rs['Description']; ?>
 
@@ -136,8 +154,6 @@
 
             } // end of else
             ?>
-            
-
             
         </div> <!-- / main -->
         
