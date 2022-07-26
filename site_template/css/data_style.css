@@ -201,3 +201,29 @@ input {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
+.free {
+    width: 245px;
+    border-radius: 5px;
+    font-size: 105%;
+}
+
+.advanced-frame {
+    border-radius: 10px;
+    background-color: #f4ff7c;
+    border: solid 1px #4f570b;
+    padding: 5px;
+}
+
+.advanced-button {
+    margin: auto;
+    width: 95%;
+    border-radius: 5px;
+    background-color: #2F480D;
+    font-size: 105%;
+}
+
+.adv {
+    width: 95%;
+    margin-bottom: 5px;
+}
