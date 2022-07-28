@@ -28,30 +28,89 @@
 
 <input class="adv" type="text" name="dev_name" size="30" value="" placeholder="Developer..."/>
 
-<input class="submit advanced-button" type="submit" name="advanced" value="Search &nbsp; &#xf002;" />
-
 <!-- Genre Dropdown -->
 
-<select name="genre">
+<select class="search adv" name="genre">
+
+<option value="" disabled selected>Genre...</option>
+
 <!-- get options from database -->
-<?php 
-$genre_sql = "SELECT * FROM `genre` ORDER BY `genre`.`Genre` ASC"
-$genre_query = mysqli_query($db_connect, $genre_sql);
-$genre_rs = mysqli_fetch_assoc($genre_query);
-
-do {
-?>
-
-<option value="name">Genre Name</option>
-
 <?php
-} // end genre do loop
+    $genre_sql = "SELECT * FROM `genre` ORDER BY `genre`.`Genre` ASC";
+    $genre_query = mysqli_query($dbconnect, $genre_sql);
+    $genre_rs = mysqli_fetch_assoc($genre_query);
 
-while ($genre_rs = mysqli_fetch_assoc($genre_query);)
+    do {
+        ?>
 
-?>
+    <option value="<?php echo $genre_rs['Genre']; ?>"><?php echo $genre_rs['Genre']; ?></option>
+
+    <?php
+    } // end genre do loop
+
+    while ($genre_rs = mysqli_fetch_assoc($genre_query))
+
+    ?>
 
 </select>
+
+<!-- Cost -->
+<div class="flex-container">
+
+    <div class="adv-txt">
+        Cost&nbsp;(less&nbsp;than):
+    </div> <!-- / cost label -->
+    <div>
+        <input class="adv" type="text" name="cost" size="30" value="" placeholder="$..." />
+    </div> <!-- / cost input box -->
+
+</div> <!-- / cost flexbox -->
+
+<!-- In app purchase checkbox -->
+
+<input class="adv-txt" type="checkbox" name="in_app" value="0" />No In App Purchase
+
+<!-- Age -->
+
+<div class="flex-container">
+    <div class="adv-txt">Age</div> <!-- / age label -->
+    <div>
+        <select class="search adv" name="age">
+            <option value="" disabled selected>Choose...</option>
+            <option value="higher">Larger than...</option>
+            <option value="lower">Lower than...</option>
+        </select>
+
+    </div> <!-- / age drop down -->
+    
+    <div>
+        <input class="adv" type="text" name="age" size="3" value="" placeholder="" />
+    </div> <!-- / age amount -->
+
+
+</div> <!-- / age flexbox -->
+
+<!-- Rating -->
+
+<div class="flex-container">
+    <div class="adv-txt">Rating</div> <!-- / rating label -->
+    <div>
+        <select class="search adv" name="rating">
+            <option value="" disabled selected>Choose...</option>
+            <option value="higher">Larger than...</option>
+            <option value="equal">Equal to...</option>
+            <option value="lower">Lower than...</option>
+        </select>
+
+    </div> <!-- / rating drop down -->
+    
+    <div>
+        <input class="adv" type="text" name="rating" size="3" value="" placeholder="" />
+    </div> <!-- / rating amount -->
+
+</div> <!-- / rating flexbox -->
+
+<input class="submit advanced-button" type="submit" name="advanced" value="Search &nbsp; &#xf002;" />
 
 </form>
 
