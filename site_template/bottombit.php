@@ -76,9 +76,9 @@
     <div class="adv-txt">Age</div> <!-- / age label -->
     <div>
         <select class="search adv" name="age">
-            <option value="" disabled selected>Choose...</option>
-            <option value="higher">Larger than...</option>
-            <option value="lower">Lower than...</option>
+            <option value="" disabled selected>Choose</option>
+            <option value="higher">Larger than</option>
+            <option value="lower">Lower than</option>
         </select>
 
     </div> <!-- / age drop down -->
@@ -95,11 +95,11 @@
 <div class="flex-container">
     <div class="adv-txt">Rating</div> <!-- / rating label -->
     <div>
-        <select class="search adv" name="rating">
-            <option value="" disabled selected>Choose...</option>
-            <option value="higher">Larger than...</option>
-            <option value="equal">Equal to...</option>
-            <option value="lower">Lower than...</option>
+        <select class="search adv" name="rating_more_less">
+            <option value="" disabled selected>Choose</option>
+            <option value="higher">Larger than</option>
+            <option value="equal">Equal to</option>
+            <option value="lower">Lower than</option>
         </select>
 
     </div> <!-- / rating drop down -->

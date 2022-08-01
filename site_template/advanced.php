@@ -5,14 +5,46 @@
     $developer = mysqli_real_escape_string($dbconnect, $_POST['developer']);
     $genre = mysqli_real_escape_string($dbconnect, $_POST['genre']);
     $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
-    
+
+    // In app purchases...
+    if (isset($_POST['in_app'])) {
+        $in_app = 0;
+    } // end if isset
+
+    else {
+        $in_app = 1;
+    } // end else
+
+    // Ratings
+    $rating_more_less = mysqli_real_escape_string($dbconnect, $_POST['rating_more_less']);
+    $rating = mysqli_real_escape_string($dbconnect, $_POST['rating']);
+
+    if ($rating_more_less == "larger than") {
+        $rate_op = ">=";
+    }
+
+    elseif ($rating_more_less == "lower than") {
+        $rate_op = "<=";
+    }
+
+    elseif ($rating_more_less == "equal to") {
+        $rate_op = "=";
+    }
+
+    else {
+        $rate_op = "<=";
+        $rating = 0;
+    } // end rating if / elseif / else
+
     $find_sql = "SELECT * FROM `game_details`
     JOIN genre ON (game_details.GenreID = genre.GenreID)
     JOIN developer ON (`game_details`.`DeveloperID` = `developer`.`DeveloperID`)
     WHERE `Name` LIKE '%$app_name%'
     AND `DevName` LIKE '%$developer%'
     AND `Genre` LIKE '%$genre%'
-    AND `Price` <= $cost
+    AND `Price` <= '$cost'
+    AND (`Purchases` = $in_app OR `Purchases` = 0)
+    AND `User Rating` $rate_op '$rating'
     ";
 
     $find_query = mysqli_query($dbconnect, $find_sql);
