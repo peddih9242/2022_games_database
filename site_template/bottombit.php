@@ -75,7 +75,7 @@
 <div class="flex-container">
     <div class="adv-txt">Age</div> <!-- / age label -->
     <div>
-        <select class="search adv" name="age">
+        <select class="search adv" name="age_more_less">
             <option value="" disabled selected>Choose</option>
             <option value="higher">Larger than</option>
             <option value="lower">Lower than</option>

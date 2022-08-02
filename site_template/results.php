@@ -99,7 +99,7 @@ else {
             ?>
 
             <b>Price:</b> $<?php echo $find_rs['Price'] ?>
-        
+            <br />
         <?php 
 
         } // end price else (displays cost)
