@@ -32,7 +32,7 @@
 
 <select class="search adv" name="genre">
 
-<option value="" disabled selected>Genre...</option>
+<option value="" selected>Genre...</option>
 
 <!-- get options from database -->
 <?php
@@ -76,7 +76,7 @@
     <div class="adv-txt">Age</div> <!-- / age label -->
     <div>
         <select class="search adv" name="age_more_less">
-            <option value="" disabled selected>Choose</option>
+            <option value="" selected>Choose</option>
             <option value="higher">Larger than</option>
             <option value="lower">Lower than</option>
         </select>
@@ -96,7 +96,7 @@
     <div class="adv-txt">Rating</div> <!-- / rating label -->
     <div>
         <select class="search adv" name="rating_more_less">
-            <option value="" disabled selected>Choose</option>
+            <option value="" selected>Choose</option>
             <option value="higher">Larger than</option>
             <option value="equal">Equal to</option>
             <option value="lower">Lower than</option>
