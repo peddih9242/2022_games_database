@@ -1,6 +1,6 @@
 <div class="box side">
            
-<h2>Add an App | <a class="side" href="showall.php">Show All</a></h2>
+<h2><a href="addentry.php">Add an App</a> | <a class="side" href="showall.php">Show All</a></h2>
 
 <form class="searchform" method="post" action="name_dev.php" enctype="multipart/form-data">
 
@@ -61,7 +61,7 @@
         Cost&nbsp;(less&nbsp;than):
     </div> <!-- / cost label -->
     <div>
-        <input class="adv" type="text" name="cost" size="30" value="" placeholder="$..." />
+        <input class="adv-cost" type="text" name="cost" size="30" value="" placeholder="$..." />
     </div> <!-- / cost input box -->
 
 </div> <!-- / cost flexbox -->

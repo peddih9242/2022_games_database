@@ -238,3 +238,24 @@ input {
 select {
     height: 40px;
 }
+
+input[type="checkbox"] {
+    display: inline;
+    width: auto;
+}
+
+.adv-cost {
+    width: 90%;
+    margin-bottom: 5px;
+}
+
+input[type="radio"] {
+    height: 0;
+    width: auto;
+    display: inline;
+}
+
+.add-entry {
+    max-width: 550px;
+    margin: auto;
+}
