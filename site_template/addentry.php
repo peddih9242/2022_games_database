@@ -1,4 +1,4 @@
-<?php include("topbit.php") 
+<?php include("topbit.php");
 
 $app_name = "";
 $subtitle = "";
@@ -16,7 +16,7 @@ $has_error = "no";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "You pushed the button"
+    echo "You pushed the button";
 } // end of button submitted code
 
 ?>           
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
             <!-- App Name (Required) -->
-            <input class="add-fueld" type="text" name="app_name" required value="<?php echo $app_name; ?>" placeholder="App Name (required) ..."/>
+            <input class="add-field" type="text" name="app_name" required value="<?php echo $app_name; ?>" placeholder="App Name (required) ..."/>
 
 
             <!-- Subtitle (optional) -->
