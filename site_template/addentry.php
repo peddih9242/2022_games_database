@@ -21,6 +21,31 @@ $has_error = "no";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    // Get values from form...
+    $app_name = mysqli_real_escape_string($dbconnect, $_POST['app_name']);
+    $subtitle = mysqli_real_escape_string($dbconnect, $_POST['subtitle']);
+    $url = mysqli_real_escape_string($dbconnect, $_POST['url']);
+    $genreID = mysqli_real_escape_string($dbconnect, $_POST['genre']);
+    
+    // if GenreID, is not blank, get genre so that genre box does
+    // not lose its value if there are errors
+    if ($genreID != "") {
+        $genreitem_sql = "SELECT * FROM `Genre` WHERE `GenreID` = $genreID";
+        $genreitem_query = mysqli_query($dbconnect, $genreitem_sql);
+        $genreitem_rs = mysqli_fetch_assoc($genreitem_query);
+
+        $genre = $genreitem_rs['Genre'];
+
+    } // End GenreID if
+
+    $dev_name = mysqli_real_escape_string($dbconnect, $_POST['dev_name']);
+    $age = mysqli_real_escape_string($dbconnect, $_POST['age']);
+    $rating = mysqli_real_escape_string($dbconnect, $_POST['rating']);
+    $rate_count = mysqli_real_escape_string($dbconnect, $_POST['rate_count']);
+    $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
+    $inapp = mysqli_real_escape_string($dbconnect, $_POST['in_app']);
+    $description = mysqli_real_escape_string($dbconnect, $_POST['description']);
     echo "You pushed the button";
 } // end of button submitted code
 
@@ -45,9 +70,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <!-- Genre dropdown (required) -->
             <select class="adv" name="genre">
+                <?php 
+                if ($genreID == "") {
+                    ?>
+                    <option value="" selected>Genre...</option>
+                <?php
+                }
+
+                else {
+                    ?>
+                <option value="<?php echo $genreID?>"><?php echo $genre; ?></option>
+                <?php
+                }
+                ?>
                 <option value="" selected>Genre...</option>
 
-                <!-- get options from database -->
+            <!-- get options from database -->
+            <?php
+            do {
+            ?>
+
+            <option value="<?php echo $genre_rs['GenreID']; ?>"><?php echo $genre_rs['Genre']; ?></option>
+
+            <?php
+            } // end genre do loop
+
+            while ($genre_rs = mysqli_fetch_assoc($genre_query))
+            
+            ?>
 
             </select>
             
@@ -69,9 +119,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input class="add-field" type="text" name="cost" value="<?php echo $cost; ?>" placeholder="Cost" />
             
             <!-- In App Purchase radio buttons -->
+            <br />
+            <br />
 
+            <div>
+            <b>In App Purchase: </b>
+
+            <!-- defaults to 'yes' -->
+            <!-- NOTE: value in database is boolean, so 'no' becomes 0 and 'yes' becomes 1 -->
+            <input type="radio" name="in_app" value="1" checked="checked" />Yes
+            <input type="radio" name="in_app" value="0" />No
+            </div>
+            
             <!-- Description text area -->
-            <input class="add-field" type="text" name="description" value="<?php echo $description; ?>" placeholder="Description (required) ..."/>
+            <br />
+            <textarea class="add-field" name="description" value="<?php echo $description; ?>" placeholder="Description..." rows="6"><?php echo $description; ?></textarea>
             
             <!-- Submit Button -->
             <p>
