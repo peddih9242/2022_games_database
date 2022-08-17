@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // if GenreID, is not blank, get genre so that genre box does
     // not lose its value if there are errors
     if ($genreID != "") {
-        $genreitem_sql = "SELECT * FROM `Genre` WHERE `GenreID` = $genreID";
+        $genreitem_sql = "SELECT * FROM `genre` WHERE `GenreID` = $genreID";
         $genreitem_query = mysqli_query($dbconnect, $genreitem_sql);
         $genreitem_rs = mysqli_fetch_assoc($genreitem_query);
 
@@ -83,7 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php
                 }
                 ?>
-                <option value="" selected>Genre...</option>
 
             <!-- get options from database -->
             <?php
