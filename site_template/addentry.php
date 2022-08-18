@@ -5,11 +5,15 @@ $genre_sql = "SELECT * FROM `genre` ORDER BY `genre`.`Genre` ASC";
 $genre_query = mysqli_query($dbconnect, $genre_sql);
 $genre_rs = mysqli_fetch_assoc($genre_query);
 
+$developer_sql = "SELECT * FROM `developer` ORDER BY `developer`.`DevName` ASC";
+$developer_query = mysqli_query($dbconnect, $developer_sql);
+$developer_rs = mysqli_fetch_assoc($developer_query);
+
 $app_name = "";
 $subtitle = "";
 $url = "";
 $genreID = "";
-$dev_name = "";
+$devID = "";
 $age = "";
 $rating = "";
 $rate_count = "";
@@ -17,15 +21,23 @@ $cost = "";
 $inapp = 1;
 $description = "";
 
-$has_error = "no";
+$has_errors = "no";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Get values from form...
     $app_name = mysqli_real_escape_string($dbconnect, $_POST['app_name']);
+    
+    if ($app_name==""){
+        $has_errors = "yes";
+    } // end app name has errors else
+
     $subtitle = mysqli_real_escape_string($dbconnect, $_POST['subtitle']);
     $url = mysqli_real_escape_string($dbconnect, $_POST['url']);
+    if($url==""){
+        $has_errors = "yes";
+    } // end url has errors else
     $genreID = mysqli_real_escape_string($dbconnect, $_POST['genre']);
     
     // if GenreID, is not blank, get genre so that genre box does
@@ -39,7 +51,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } // End GenreID if
 
-    $dev_name = mysqli_real_escape_string($dbconnect, $_POST['dev_name']);
+    else {
+        $has_errors = "yes";
+    } // end genre has errors else
+
+    // Go to success page
+    if ($has_errors == "no") {
+        // go to success page
+        header('Location: add_success.php')
+    }
+
+    $devID = mysqli_real_escape_string($dbconnect, $_POST['devID']);
+    
+    if ($devID != "") {
+        $devitem_sql = "SELECT * FROM `developer` WHERE `DeveloperID` = $devID";
+        $devitem_query = mysqli_query($dbconnect, $devitem_sql);
+        $devitem_rs = mysqli_fetch_assoc($devitem_query);
+
+        $dev = $devitem_rs['DevName'];
+
+    } // End GenreID if
+
+    else {
+        $has_errors = "yes";
+    } // end dev has errors else
+
     $age = mysqli_real_escape_string($dbconnect, $_POST['age']);
     $rating = mysqli_real_escape_string($dbconnect, $_POST['rating']);
     $rate_count = mysqli_real_escape_string($dbconnect, $_POST['rate_count']);
@@ -47,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $inapp = mysqli_real_escape_string($dbconnect, $_POST['in_app']);
     $description = mysqli_real_escape_string($dbconnect, $_POST['description']);
     echo "You pushed the button";
+
 } // end of button submitted code
 
 ?>           
@@ -101,7 +138,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
             
             <!-- Developer Name (required) -->
-            <input class="add-field" type="text" name="dev_name" value="<?php echo $dev_name; ?>" placeholder="Dev Name (required) ..."/>
+            <select class="add-field" name="devID">
+            
+            <?php
+            if ($devID == "") {
+                ?>
+                <option value="" selected>Developer...</option>
+            <?php
+            }
+
+            else {
+                ?>
+            <option value="<?php echo $devID?>"><?php echo $dev; ?></option>
+            <?php
+            }
+            ?>
+
+            <!-- get options from database -->
+            <?php
+            do {
+            ?>
+
+            <option value="<?php echo $developer_rs['DeveloperID']; ?>"><?php echo $developer_rs['DevName']; ?></option>
+
+            <?php
+            } // end genre do loop
+
+            while ($developer_rs = mysqli_fetch_assoc($developer_query))
+            
+            ?>
+
+            </select>
             
             <!-- Age (set to 0 if left blank) -->
             <input class="add-field" type="text" name="age" value="<?php echo $age; ?>" placeholder="Age" />
@@ -126,8 +193,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- defaults to 'yes' -->
             <!-- NOTE: value in database is boolean, so 'no' becomes 0 and 'yes' becomes 1 -->
-            <input type="radio" name="in_app" value="1" checked="checked" />Yes
-            <input type="radio" name="in_app" value="0" />No
+            <?php
+            if($inapp==1) {
+            // Default value, 'yes' is selected
+            ?>
+            <input type="radio" name="in_app" value="1" checked="checked"/>Yes
+            <input type="radio" name="in_app" value="0"/>No
+            <?php
+            } // end 'yes in_app if
+
+            else{
+                ?>
+                <input type="radio" name="in_app" value="1" />Yes
+                <input type="radio" name="in_app" value="0" checked="checked" />No
+            <?php
+            } // end 'in_app' else
+            ?>
             </div>
             
             <!-- Description text area -->
