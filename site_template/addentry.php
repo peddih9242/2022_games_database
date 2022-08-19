@@ -55,11 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $has_errors = "yes";
     } // end genre has errors else
 
-    // Go to success page
-    if ($has_errors == "no") {
-        // go to success page
-        header('Location: add_success.php')
-    }
+
 
     $devID = mysqli_real_escape_string($dbconnect, $_POST['devID']);
     
@@ -82,7 +78,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
     $inapp = mysqli_real_escape_string($dbconnect, $_POST['in_app']);
     $description = mysqli_real_escape_string($dbconnect, $_POST['description']);
-    echo "You pushed the button";
+    
+    // check for errors
+    if ($has_errors == "no") {
+
+        $add_entry_sql = "INSERT INTO `game_details` (`ID`, `Name`, `Subtitle`, 
+        `URL`, `GenreID`, `DeveloperID`, `Age`, `User Rating`, 
+        `Rating Count`, `Price`, `Purchases`, `Description`) 
+        VALUES (NULL, '$app_name', '$subtitle', '$url', $genreID, $devID, $age, 
+        $rating, $rate_count, $cost, $inapp, '$description')";
+        $add_entry_query = mysqli_query($dbconnect, $add_entry_sql);        
+        
+        // go to success page
+        // header('Location: add_success.php');
+    }
+
+    // Get ID for next page
+    $getid_sql = "SELECT * FROM `game_details` WHERE 
+    `Name` LIKE '$app_name' AND 
+    `Subtitle` LIKE '$subtitle' AND 
+    `URL` LIKE '$url' AND
+    `GenreID` = $genreID AND
+    `DeveloperID` = $devID AND
+    `Age` = $age AND
+    `User Rating` = $rating AND
+    `Rating Count` = $rate_count AND
+    `Price` = $cost AND
+    `Purchases` = $inapp";
+
+    $getid_query = mysqli_query($dbconnect, $getid_sql);
+    $getid_rs = mysqli_fetch_assoc($getid_query);
+
+    $ID = $getid_rs['ID'];
+    $_SESSION['ID'] = $ID;
+
+    echo "ID: ".$ID;
 
 } // end of button submitted code
 
