@@ -109,6 +109,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $getid_query = mysqli_query($dbconnect, $getid_sql);
     $getid_rs = mysqli_fetch_assoc($getid_query);
 
+    echo $app_name;
+    echo $subtitle;
+    echo $url;
+    echo $genreID;
+    echo $devID;
+    echo $age;
+    echo $rating;
+    echo $rate_count;
+    echo $cost;
+    echo $inapp;
+
     $ID = $getid_rs['ID'];
     $_SESSION['ID'] = $ID;
 
