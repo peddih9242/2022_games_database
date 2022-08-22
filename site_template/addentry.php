@@ -87,43 +87,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         `Rating Count`, `Price`, `Purchases`, `Description`) 
         VALUES (NULL, '$app_name', '$subtitle', '$url', $genreID, $devID, $age, 
         $rating, $rate_count, $cost, $inapp, '$description')";
-        $add_entry_query = mysqli_query($dbconnect, $add_entry_sql);        
+        $add_entry_query = mysqli_query($dbconnect, $add_entry_sql);    
         
+    // Get ID for next page
+    $getid_sql = "SELECT * FROM `game_details` WHERE `Name` LIKE '$app_name'
+    AND `Subtitle` LIKE '$subtitle' 
+    AND `URL` LIKE '$url'
+    AND `GenreID` = $genreID
+    AND `DeveloperID` = $devID
+    AND `Age` = $age
+    AND `User Rating` = $rating
+    AND `Rating Count` = $rate_count
+    AND `Price` = $cost
+    AND `Purchases` = $inapp";
+
+        $getid_query = mysqli_query($dbconnect, $getid_sql);
+        $getid_rs = mysqli_fetch_assoc($getid_query);
+    
+        $ID = $getid_rs['ID'];
+        $_SESSION['ID'] = $ID;
+    
+        echo "ID: ".$ID;
+
         // go to success page
-        // header('Location: add_success.php');
+        header('Location: add_success.php');
     }
 
-    // Get ID for next page
-    $getid_sql = "SELECT * FROM `game_details` WHERE 
-    `Name` LIKE '$app_name' AND 
-    `Subtitle` LIKE '$subtitle' AND 
-    `URL` LIKE '$url' AND
-    `GenreID` = $genreID AND
-    `DeveloperID` = $devID AND
-    `Age` = $age AND
-    `User Rating` = $rating AND
-    `Rating Count` = $rate_count AND
-    `Price` = $cost AND
-    `Purchases` = $inapp";
 
-    $getid_query = mysqli_query($dbconnect, $getid_sql);
-    $getid_rs = mysqli_fetch_assoc($getid_query);
 
-    echo $app_name;
-    echo $subtitle;
-    echo $url;
-    echo $genreID;
-    echo $devID;
-    echo $age;
-    echo $rating;
-    echo $rate_count;
-    echo $cost;
-    echo $inapp;
-
-    $ID = $getid_rs['ID'];
-    $_SESSION['ID'] = $ID;
-
-    echo "ID: ".$ID;
 
 } // end of button submitted code
 
