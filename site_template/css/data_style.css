@@ -264,3 +264,24 @@ input[type="radio"] {
     width: 95%;
     margin-bottom: 5px;
 }
+
+/* Form Error CSS */
+
+/* field backgrounds */
+.form-ok {
+    background-color: #fff;
+}
+
+.form-error {
+    background-color: #ff9e9e;
+}
+
+/* error messages */
+
+.no-error {
+    display: none;
+}
+
+.error-text {
+    color: darkred;
+}

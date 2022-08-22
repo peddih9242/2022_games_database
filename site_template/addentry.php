@@ -21,7 +21,11 @@ $cost = "";
 $inapp = 1;
 $description = "";
 
+
+// set up error field colours / visibility (no errors at first)
 $has_errors = "no";
+
+$app_field = "form-ok";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,6 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($app_name==""){
         $has_errors = "yes";
+        $app_error = "error-text";
+        $app_field = "form-error";
     } // end app name has errors else
 
     $subtitle = mysqli_real_escape_string($dbconnect, $_POST['subtitle']);
@@ -129,7 +135,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
             <!-- App Name (Required) -->
-            <input class="add-field" type="text" name="app_name" value="<?php echo $app_name; ?>" placeholder="App Name (required) ..."/>
+            <div class="<?php echo $app_error; ?>">
+                Please fill in the 'App Name' field
+            </div>
+            <input class="add-field <?php echo $app_field; ?>" type="text" name="app_name" value="<?php echo $app_name; ?>" placeholder="App Name (required) ..."/>
 
             <!-- Subtitle (optional) -->
             <input class="add-field" type="text" name="subtitle" value="<?php echo $subtitle; ?>" placeholder="Subtitle (optional) ..."/>
