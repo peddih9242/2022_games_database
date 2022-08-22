@@ -21,11 +21,13 @@ $cost = "";
 $inapp = 1;
 $description = "";
 
-
-// set up error field colours / visibility (no errors at first)
 $has_errors = "no";
 
-$app_field = "form-ok";
+// set up error field colours / visibility (no errors at first)
+
+$app_error = $dev_error = $url_error = $description_error = $genre_error = "no-error";
+
+$app_field = $dev_field = $url_field = $description_field = $genre_field = "form-ok";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -43,6 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $url = mysqli_real_escape_string($dbconnect, $_POST['url']);
     if($url==""){
         $has_errors = "yes";
+        $url_error = "error-text";
+        $url_field = "form-error";
     } // end url has errors else
     $genreID = mysqli_real_escape_string($dbconnect, $_POST['genre']);
     
@@ -59,6 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     else {
         $has_errors = "yes";
+        $genre_error = "error-text";
+        $genre_field = "form-error";
     } // end genre has errors else
 
 
@@ -76,6 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     else {
         $has_errors = "yes";
+        $dev_error = "error-text";
+        $dev_field = "form-error";
     } // end dev has errors else
 
     $age = mysqli_real_escape_string($dbconnect, $_POST['age']);
@@ -84,6 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
     $inapp = mysqli_real_escape_string($dbconnect, $_POST['in_app']);
     $description = mysqli_real_escape_string($dbconnect, $_POST['description']);
+    if ($description == "") {
+        $has_errors = "yes";
+        $description_error = "error-text";
+        $description_field = "form-error";
+    }
     
     // check for errors
     if ($has_errors == "no") {
@@ -144,10 +157,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input class="add-field" type="text" name="subtitle" value="<?php echo $subtitle; ?>" placeholder="Subtitle (optional) ..."/>
             
             <!-- URL (required, must start http://) -->
-            <input class="add-field" type="text" name="url" value="<?php echo $url; ?>" placeholder="URL (required) ..."/>
+            <div class="<?php echo $url_error; ?>">
+                Please fill in the 'URL' field
+            </div>
+            <input class="add-field <?php echo $url_field;?>" type="text" name="url" value="<?php echo $url; ?>" placeholder="URL (required) ..."/>
             
             <!-- Genre dropdown (required) -->
-            <select class="adv" name="genre">
+            <div class="<?php echo $genre_error;?>">
+                Please select a genre
+            </div>
+            <select class="adv <?php echo $genre_field;?>" name="genre">
                 <?php 
                 if ($genreID == "") {
                     ?>
@@ -179,7 +198,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
             
             <!-- Developer Name (required) -->
-            <select class="add-field" name="devID">
+            <div class="<?php echo $dev_error;?>">
+                Please select a developer
+            </div>
+            <select class="add-field <?php echo $dev_field;?>" name="devID">
             
             <?php
             if ($devID == "") {
@@ -254,7 +276,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <!-- Description text area -->
             <br />
-            <textarea class="add-field" name="description" value="<?php echo $description; ?>" placeholder="Description..." rows="6"><?php echo $description; ?></textarea>
+            <div class="<?php echo $description_error;?>">
+                Please fill in the 'Description' field
+            </div>
+            <textarea class="add-field <?php echo $description_field;?>" name="description" value="<?php echo $description; ?>" placeholder="Description..." rows="6"><?php echo $description; ?></textarea>
             
             <!-- Submit Button -->
             <p>
