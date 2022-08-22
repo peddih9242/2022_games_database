@@ -25,9 +25,11 @@ $has_errors = "no";
 
 // set up error field colours / visibility (no errors at first)
 
-$app_error = $dev_error = $url_error = $description_error = $genre_error = "no-error";
+$app_error = $dev_error = $url_error = $description_error = $genre_error = $age_error = $rating_error = $count_error = $cost_error = "no-error";
 
-$app_field = $dev_field = $url_field = $description_field = $genre_field = "form-ok";
+$app_field = $dev_field = $url_field = $description_field = $genre_field = $age_field = $rating_field = $count_field = $cost_field = "form-ok";
+
+$age_message = $cost_message = "";
 
 // Code below executes when the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,15 +41,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $has_errors = "yes";
         $app_error = "error-text";
         $app_field = "form-error";
-    } // end app name has errors else
+    } // end app name error checking else
 
     $subtitle = mysqli_real_escape_string($dbconnect, $_POST['subtitle']);
     $url = mysqli_real_escape_string($dbconnect, $_POST['url']);
-    if($url==""){
+    // Check URL is valid...
+
+    // Remove all illegal characters from a url
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    
+    if(filter_var($url, FILTER_VALIDATE_URL) == false){
         $has_errors = "yes";
         $url_error = "error-text";
         $url_field = "form-error";
-    } // end url has errors else
+    } // end url error checking else
+
     $genreID = mysqli_real_escape_string($dbconnect, $_POST['genre']);
     
     // if GenreID, is not blank, get genre so that genre box does
@@ -65,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $has_errors = "yes";
         $genre_error = "error-text";
         $genre_field = "form-error";
-    } // end genre has errors else
+    } // end genre error checking else
 
 
 
@@ -84,12 +92,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $has_errors = "yes";
         $dev_error = "error-text";
         $dev_field = "form-error";
-    } // end dev has errors else
+    } // end dev error checking else
 
     $age = mysqli_real_escape_string($dbconnect, $_POST['age']);
+    // check that age is a number above 0
+    if ($age == "" || $age == 0) {
+        $age = 0;
+        $age_message = "The age has been set to 0 (ie: all ages)";
+        $age_error = "defaulted";
+    }    
+
+    else if (!ctype_digit($age) || $age < 0) {
+        $age_message = "Please enter a number that is 0 or more";
+        $has_errors = "yes";
+        $age_error = "error-text";
+        $age_field = "form-error";
+    }
+
     $rating = mysqli_real_escape_string($dbconnect, $_POST['rating']);
+    // check that rating is a decimal between 0 and 5
+    if (!is_numeric($rating) || $rating < 0 || $rating > 5) {
+        $has_errors = "yes";
+        $rating_error = "error-text";
+        $rating_field = "form-error";
+    }
+    
     $rate_count = mysqli_real_escape_string($dbconnect, $_POST['rate_count']);
+    // check that rating count is an integer more than 0
+    if (!ctype_digit($rate_count) || $rate_count < 0) {
+        $has_errors = "yes";
+        $count_error = "error-text";
+        $count_field = "form-error";
+    }    
+    
     $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
+    // check that cost is a number, if it's blank, set it to 0
+    if ($cost == "" || $cost == 0) {
+        $has_errors = "yes";
+        $cost_error = "defaulted";
+        $cost_message = "The price has been set to 0 (ie: free)";
+    }
+
+    // check that age is a number that is more than 0
+    else if (!is_numeric($cost) || $cost < 0) {
+        $cost_message = "Please enter a number that is 0 or more";
+        $has_errors = "yes";
+        $cost_error = "error-text";
+        $cost_field = "form-error";
+    }
+
     $inapp = mysqli_real_escape_string($dbconnect, $_POST['in_app']);
     $description = mysqli_real_escape_string($dbconnect, $_POST['description']);
     if ($description == "") {
@@ -98,7 +149,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $description_field = "form-error";
     }
     
-    // check for errors
+    // check for errors then insert entry to table
+    // then search for entry to display to user on next page
     if ($has_errors == "no") {
 
         $add_entry_sql = "INSERT INTO `game_details` (`ID`, `Name`, `Subtitle`, 
@@ -234,18 +286,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
             
             <!-- Age (set to 0 if left blank) -->
-            <input class="add-field" type="text" name="age" value="<?php echo $age; ?>" placeholder="Age" />
+            <div class="<?php echo $age_error;?>">
+                <?php echo $age_message;?>
+            </div>
+            <input class="add-field <?php echo $age_field;?>" type="text" name="age" value="<?php echo $age; ?>" placeholder="Age" />
             
             <!-- Rating (Number between 0 - 5, 1 dp) -->
-            <div>
-                <input class="add-field" type="text" name="rating" value="<?php echo $rating; ?>" placeholder="Rating (0-5)" />
+            <div class="<?php echo $rating_error;?>">
+                Please enter a number between 0 and 5
             </div>
+            <input class="add-field <?php echo $rating_field;?>" type="text" name="rating" value="<?php echo $rating; ?>" placeholder="Rating (0-5)" />
 
             <!-- # of ratings (integer more than 0) -->
-            <input class="add-field" type="text" name="rate_count" value="<?php echo $rate_count; ?>" placeholder="# of Ratings" />
+            <div class="<?php echo $count_error;?>">
+                Please enter an integer above 0
+            </div>
+            <input class="add-field <?php echo $count_field;?>" type="text" name="rate_count" value="<?php echo $rate_count; ?>" placeholder="# of Ratings" />
             
             <!-- Cost (Decimal 2dp, must be more than 0) -->
-            <input class="add-field" type="text" name="cost" value="<?php echo $cost; ?>" placeholder="Cost" />
+            <div class="<?php echo $cost_error;?>">
+                <?php echo $cost_message;?>
+            </div>
+            <input class="add-field <?php echo $cost_field;?>" type="text" name="cost" value="<?php echo $cost; ?>" placeholder="Cost" />
             
             <!-- In App Purchase radio buttons -->
             <br />

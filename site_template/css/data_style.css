@@ -285,3 +285,7 @@ input[type="radio"] {
 .error-text {
     color: darkred;
 }
+
+.defaulted {
+    color: darkgreen;
+}
