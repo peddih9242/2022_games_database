@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $age = mysqli_real_escape_string($dbconnect, $_POST['age']);
     // check that age is a number above 0
-    if ($age == "" || $age == 0) {
+    if ($age == "" || $age == "0") {
         $age = 0;
         $age_message = "The age has been set to 0 (ie: all ages)";
         $age_error = "defaulted";
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $rate_count = mysqli_real_escape_string($dbconnect, $_POST['rate_count']);
     // check that rating count is an integer more than 0
-    if (!ctype_digit($rate_count) || $rate_count < 0) {
+    if (!ctype_digit($rate_count) || $rate_count < 1) {
         $has_errors = "yes";
         $count_error = "error-text";
         $count_field = "form-error";
@@ -127,15 +127,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $cost = mysqli_real_escape_string($dbconnect, $_POST['cost']);
     // check that cost is a number, if it's blank, set it to 0
-    if ($cost == "" || $cost == 0) {
-        $has_errors = "yes";
+    if ($cost == "" || $cost == "0") {
+        $cost = 0;
         $cost_error = "defaulted";
         $cost_message = "The price has been set to 0 (ie: free)";
     }
 
     // check that age is a number that is more than 0
     else if (!is_numeric($cost) || $cost < 0) {
-        $cost_message = "Please enter a number that is 0 or more";
+        $cost_message = "Please enter a number that is 0 or more (no $ symbols please)";
         $has_errors = "yes";
         $cost_error = "error-text";
         $cost_field = "form-error";
@@ -170,7 +170,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     AND `User Rating` = $rating
     AND `Rating Count` = $rate_count
     AND `Price` = $cost
-    AND `Purchases` = $inapp";
+    AND `Purchases` = $inapp
+    ";
 
         $getid_query = mysqli_query($dbconnect, $getid_sql);
         $getid_rs = mysqli_fetch_assoc($getid_query);
@@ -210,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <!-- URL (required, must start http://) -->
             <div class="<?php echo $url_error; ?>">
-                Please fill in the 'URL' field
+                Please provide a valid URL (include the http://)
             </div>
             <input class="add-field <?php echo $url_field;?>" type="text" name="url" value="<?php echo $url; ?>" placeholder="URL (required) ..."/>
             
